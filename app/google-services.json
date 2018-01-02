@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "751077683022",
+    "firebase_url": "https://payrec-fd70c.firebaseio.com",
+    "project_id": "payrec-fd70c",
+    "storage_bucket": "payrec-fd70c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751077683022:android:e14f5a4a069a2c8c",
+        "android_client_info": {
+          "package_name": "com.nearur.payrec"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751077683022-nto933mu836eooqg3od3f2p0jlefv4dn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nearur.payrec",
+            "certificate_hash": "6f0ee1f85c577659e96581ced0fd2cf2c1e8c59b"
+          }
+        },
+        {
+          "client_id": "751077683022-3u12oop0c23ch8td5obfoii4n7mbcivf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDWQ6uFnGzVlIoRhM5YxLi3M2OB-GfVTC4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751077683022-3u12oop0c23ch8td5obfoii4n7mbcivf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

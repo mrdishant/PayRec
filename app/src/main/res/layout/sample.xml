@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/cardview"
+    android:background="@drawable/back"
+    android:layout_height="wrap_content">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black"
+        android:alpha="0.3"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp"
+    android:paddingBottom="10dp"
+    android:layout_height="wrap_content">
+
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/profile_image_add"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:src="@drawable/ic_menu_camera"
+        app:civ_border_width="2dp"
+        app:civ_border_color="#FF000000"/>
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="55"
+        android:textColor="@color/skyblue"
+        android:text="Hello"
+        android:layout_gravity="center"
+        android:textSize="16dp"
+        android:textAlignment="center"
+        android:id="@+id/worker_details"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
+</RelativeLayout>
+</android.support.v7.widget.CardView>

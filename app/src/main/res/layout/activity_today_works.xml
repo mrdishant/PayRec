@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nearur.payrec.TodayWorks">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:title="Daily Work"
+            app:navigationIcon="@drawable/backarrow"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:id="@+id/toolbar"/>
+
+    </android.support.design.widget.AppBarLayout>
+
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ProgressBar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/progress"
+            android:visibility="gone"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="75dp"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.nearur.payrec.TodayWorks">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:gravity="center"
+        android:layout_marginTop="45dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/profile_image_add"
+            android:layout_width="100dp"
+            android:layout_weight="15"
+            android:layout_marginLeft="30dp"
+            android:layout_height="120dp"
+            android:src="@drawable/ic_menu_camera"
+            app:civ_border_width="2dp"
+            app:civ_border_color="#FF000000"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="55"
+            android:layout_marginTop="5dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <CheckedTextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/name"
+                android:textColor="@android:color/black"
+                android:textSize="20dp"
+                android:text="Name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/job"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:text="Job"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/job"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:id="@+id/address"
+
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                android:drawablePadding="5dp"
+                android:drawableLeft="@drawable/address"
+                android:text="Address"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginTop="16dp"
+            android:background="@android:color/white"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/mobile"
+                android:text="Mobile"
+                android:background="@android:color/transparent"
+                android:drawableLeft="@drawable/sms"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:drawableRight="@drawable/call"/>
+
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/work"
+            android:background="@android:color/transparent"
+            android:layout_marginTop="15dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/debit"
+                    android:drawableRight="@drawable/arrow"
+                    android:text="Advance Payment"
+                    android:id="@+id/advancepay"
+                    android:drawablePadding="10dp"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/credit"
+                    android:drawableRight="@drawable/arrow"
+                    android:text="Payment Due"
+                    android:id="@+id/payment_due"
+                    android:drawablePadding="10dp"
+                    android:textSize="16dp"/>
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_margin="10dp"
+            android:id="@+id/amounttaker"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:orientation="vertical">
+
+        <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="horizontal"
+
+        android:layout_height="wrap_content">
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="0dp"
+            android:layout_weight="25"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            app:met_floatingLabelText="Quantity"
+            android:hint="Quantity"
+            android:inputType="number"
+            android:layout_marginRight="10dp"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextColor="@color/skyblue"
+            app:met_floatingLabelTextSize="16dp"
+            android:id="@+id/units"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="0dp"
+            android:layout_weight="25"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:hint="Price Per Unit"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            app:met_floatingLabelText="Price Per Unit"
+            app:met_floatingLabel="highlight"
+            android:inputType="numberDecimal"
+            app:met_floatingLabelTextColor="@color/skyblue"
+            app:met_floatingLabelTextSize="16dp"
+            android:id="@+id/price_pre_unit"/>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="0dp"
+            android:layout_weight="25"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:hint="Total"
+            app:met_floatingLabelText="Total"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextColor="@color/skyblue"
+            app:met_floatingLabelTextSize="16dp"
+            android:id="@+id/total"
+            />
+
+    </LinearLayout>
+
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:layout_width="match_parent"
+            android:inputType="textMultiLine"
+            android:hint="Comment"
+            android:id="@+id/comment"
+            app:met_floatingLabel="highlight"
+            app:met_floatingLabelTextSize="16dp"
+            app:met_floatingLabelText="Comment"
+            android:layout_height="wrap_content" />
+
+
+        <Button
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/submit_dailyWork"
+            android:background="@color/skyblue"
+            android:layout_marginLeft="70dp"
+            android:layout_marginRight="70dp"
+            android:text="Submit"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/recyclerview"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            android:text="PayRec"/>
+    </LinearLayout>
+
+    </RelativeLayout>
+</android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

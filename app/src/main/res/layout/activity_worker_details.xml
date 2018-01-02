@@ -1,0 +1,355 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.nearur.payrec.WorkerDetails">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/white"
+            app:title="Profile"
+            app:navigationIcon="@drawable/backarrow"
+            app:popupTheme="@style/AppTheme.PopupOverlay"
+            android:id="@+id/toolbar"/>
+
+    </android.support.design.widget.AppBarLayout>
+<android.support.v4.widget.NestedScrollView
+    android:layout_width="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:background="@color/cardview_shadow_end_color"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="5dp"
+                    android:layout_height="wrap_content">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        android:id="@+id/profile_image_add"
+                        android:layout_width="0dp"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="15"
+                        android:layout_height="70dp"
+                        android:src="@drawable/ic_menu_camera"
+                        app:civ_border_width="2dp"
+                        app:civ_border_color="#FF000000"/>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="0dp"
+                        android:layout_weight="25"
+                        app:met_floatingLabelText="Id"
+                        android:id="@+id/id"
+                        android:textSize="15dp"
+                        android:layout_marginRight="10dp"
+                        app:met_primaryColor="@color/skyblue"
+                        app:met_floatingLabel="highlight"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="-10dp"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_weight="15"
+                        android:textAlignment="center"
+                        android:layout_height="wrap_content"
+                        android:text="Touch Here"
+                        android:id="@+id/edit"
+                        android:gravity="top"
+                        android:textColor="@color/skyblue"/>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="0dp"
+                        android:layout_weight="25"
+                        app:met_floatingLabelText="Type"
+                        android:id="@+id/type"
+                        android:layout_marginRight="10dp"
+                        android:textSize="15dp"
+                        app:met_primaryColor="@color/skyblue"
+                        app:met_floatingLabel="highlight"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:paddingLeft="10dp"
+            android:id="@+id/personalinfo"
+            android:text="Personal Information"/>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:id="@+id/personal"
+            android:layout_height="wrap_content">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+
+
+                <ProgressBar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_centerHorizontal="true"
+                    android:id="@+id/progress"
+                    />
+
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_marginTop="10dp"
+                    android:orientation="vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:layout_height="wrap_content">
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelText="Name"
+                        android:hint="Name"
+                        android:id="@+id/name"
+                        android:inputType="textPersonName"
+                        android:textSize="15dp"
+                        app:met_clearButton="true"
+                        app:met_iconLeft="@drawable/username"
+                        app:met_primaryColor="@color/skyblue"
+                        />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelText="Mobile No."
+                        android:hint="Mobile No."
+                        app:met_clearButton="true"
+                        android:textSize="15dp"
+                        android:inputType="phone"
+                        android:id="@+id/mobile_number"
+                        app:met_iconLeft="@drawable/mobile"
+                        app:met_primaryColor="@color/skyblue"
+                        />
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelText="Address"
+                        android:hint="Address"
+                        app:met_clearButton="true"
+                        android:textSize="15dp"
+                        android:id="@+id/address"
+                        android:inputType="textPostalAddress"
+                        app:met_primaryColor="@color/skyblue"
+                        app:met_iconLeft="@drawable/address"/>
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:met_floatingLabel="highlight"
+                        app:met_floatingLabelText="Date of Join"
+                        android:hint="Date of Join"
+                        app:met_clearButton="true"
+                        android:id="@+id/date"
+                        android:textSize="15dp"
+                        android:inputType="date"
+                        app:met_primaryColor="@color/skyblue"
+                        app:met_iconLeft="@drawable/date"/>
+
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="@color/skyblue"
+                        app:met_floatingLabelText="Job"
+                        android:hint="Job"
+                        android:textSize="15dp"
+                        android:id="@+id/job"
+                        android:inputType="text"
+                        app:met_clearButton="true"
+                        app:met_iconLeft="@drawable/job"/>
+
+
+                    <com.rengwuxian.materialedittext.MaterialEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:met_floatingLabel="highlight"
+                        app:met_primaryColor="@color/skyblue"
+                        app:met_floatingLabelText="Salary"
+                        android:hint="Salary"
+                        android:textSize="15dp"
+                        android:inputType="number"
+                        android:id="@+id/salary"
+                        app:met_clearButton="true"
+                        app:met_iconLeft="@drawable/salary"/>
+
+
+                </LinearLayout>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:id="@+id/workinfo"
+            android:paddingLeft="10dp"
+            android:text="Work Information"/>
+
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/work"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/debit"
+                    android:drawableRight="@drawable/arrow"
+                    android:text="Advance Payment"
+                    android:id="@+id/advance"
+                    android:drawablePadding="10dp"
+                    android:textSize="16dp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/credit"
+                    android:drawableRight="@drawable/arrow"
+                    android:text="Payment Due"
+                    android:id="@+id/payment_due"
+                    android:drawablePadding="10dp"
+                    android:textSize="16dp"/>
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/salary"
+                    android:drawableRight="@drawable/arrow"
+                    android:text="Previous  Payments"
+                    android:id="@+id/paymentsprevious"
+                    android:drawablePadding="10dp"
+                    android:textSize="16dp"/>
+
+            </LinearLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Due Details"
+            android:id="@+id/dueinfo"
+            android:visibility="gone"
+            android:textColor="@android:color/black"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:id="@+id/due"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <com.rengwuxian.materialedittext.MaterialEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:met_floatingLabel="highlight"
+                    app:met_primaryColor="@color/skyblue"
+                    app:met_floatingLabelText="Search"
+                    android:hint="Search"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:textSize="15dp"
+                    android:inputType="text"
+                    android:id="@+id/search"
+                    app:met_clearButton="true"
+                    app:met_iconLeft="@drawable/search"/>
+
+
+                <android.support.v7.widget.RecyclerView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/recyclerview"/>
+
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+</android.support.v4.widget.NestedScrollView>
+
+
+</android.support.design.widget.CoordinatorLayout>
