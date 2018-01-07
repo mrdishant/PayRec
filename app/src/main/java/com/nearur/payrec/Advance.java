@@ -192,7 +192,7 @@ public class Advance extends AppCompatActivity {
                 worker=documentSnapshot.toObject(Worker.class);
 
                if(worker.picture !=null){
-                   Glide.with(getApplicationContext()).load(Uri.parse(worker.picture)).centerCrop().into(imageView);
+                   Glide.with(getApplicationContext()).load(Uri.parse(worker.picture)).into(imageView);
                }
 
                 name.setText(worker.name);

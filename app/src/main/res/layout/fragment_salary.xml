@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:focusable="true"
+    android:background="@drawable/background"
     android:focusableInTouchMode="true"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="16dp"
@@ -18,7 +19,7 @@
             app:met_floatingLabel="highlight"
             app:met_primaryColor="@color/skyblue"
             android:hint="Employee Name"
-            app:met_iconLeft="@drawable/search"
+            app:met_iconRight="@drawable/search"
             app:met_floatingLabelTextSize="16dp"
             app:met_floatingLabelText="Employee Name"
             android:id="@+id/salarysearch"/>

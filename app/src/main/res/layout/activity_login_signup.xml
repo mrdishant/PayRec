@@ -3,142 +3,132 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:background="@drawable/back"
     android:layout_height="match_parent"
+    android:background="@drawable/background"
     android:fitsSystemWindows="true"
     tools:context="com.nearur.payrec.LoginSignup">
 
     <View
         android:id="@+id/title"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#000000"
-        android:alpha="0.5"
-        android:layout_alignParentTop="true" />
+        android:layout_height="340dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="170dp"
+        android:alpha="0.3"
+        android:background="@color/white" />
 
 
     <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:visibility="gone"
         android:id="@+id/progress"
-        android:layout_height="wrap_content" />
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="255dp"
+        android:visibility="gone" />
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:background="@android:color/transparent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true"
         android:orientation="vertical"
-        tools:context="com.nearur.payrec.LoginSignup">
+        >
 
 
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/toolbar12"
-        android:minHeight="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:titleTextColor="@android:color/white">
-
-    </android.support.v7.widget.Toolbar>
-
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="26dp">
-<com.facebook.shimmer.ShimmerFrameLayout
-    android:layout_width="match_parent"
-    android:id="@+id/sssss"
-    app:auto_start="true"
-    android:layout_height="wrap_content">
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="PayRec"
-        android:textColor="@android:color/white"
-        android:textSize="48dp"/>
-
-</com.facebook.shimmer.ShimmerFrameLayout>
-
-
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar12"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:met_floatingLabel="highlight"
-            android:hint="Email"
-            app:met_floatingLabelTextSize="20dp"
-            android:layout_marginTop="10dp"
-            app:met_floatingLabelTextColor="@color/skyblue"
-            app:met_floatingLabelText="Email"
-            app:met_clearButton="true"
-            android:id="@+id/email"
-            app:met_autoValidate="true"
-            app:met_validateOnFocusLost="true"
-            app:met_textColor="@android:color/white"
-            app:met_iconLeft="@drawable/email"
-            app:met_primaryColor="@color/skyblue"/>
+            android:minHeight="?attr/actionBarSize"
+            android:background="@android:color/transparent"
+            app:titleTextColor="@android:color/white">
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
 
-
-        <com.rengwuxian.materialedittext.MaterialEditText
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:met_floatingLabel="highlight"
-            android:hint="Password"
-            app:met_floatingLabelTextSize="20dp"
-            android:layout_marginTop="10dp"
-            app:met_floatingLabelTextColor="@color/skyblue"
-            app:met_floatingLabelText="Password"
-            app:met_clearButton="true"
-            android:id="@+id/password"
-            app:met_textColor="@android:color/white"
-            android:inputType="textPassword"
-            app:met_autoValidate="true"
-            app:met_validateOnFocusLost="true"
-            app:met_iconLeft="@drawable/password"
-            app:met_primaryColor="@color/skyblue"/>
+            android:orientation="vertical"
+            android:layout_marginTop="60dp"
+            android:padding="26dp">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/logo" />
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="25dp"
+                android:hint="Email"
+                app:met_clearButton="true"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelText="Email"
+                app:met_iconLeft="@drawable/email2"
+                app:met_primaryColor="@color/colorAccent" />
 
 
-        <info.hoang8f.widget.FButton
-            android:layout_marginTop="10dp"
-        android:layout_width="match_parent"
-            android:layout_marginRight="16dp"
-            android:layout_marginLeft="16dp"
-        android:layout_height="wrap_content"
-        android:text="Login"
-            android:id="@+id/login"
-            android:background="@color/skyblue"
-            android:textColor="@android:color/white"
-        />
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:id="@+id/password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:hint="Password"
+                android:inputType="textPassword"
+                app:met_clearButton="true"
+                app:met_floatingLabel="highlight"
+                app:met_floatingLabelText="Password"
+                app:met_iconLeft="@drawable/password"
+                app:met_primaryColor="@color/colorAccent"
+                />
+
+
+            <Button
+                android:id="@+id/login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="10dp"
+                android:background="@color/skyblue"
+                android:text="Login"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white" />
+
+
+            <com.shobhitpuri.custombuttons.GoogleSignInButton
+                android:id="@+id/Googlebutton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="10dp"
+                android:text="@string/google_sign_in"
+                app:isDarkTheme="true" />
+
+
+            <TextView
+                android:id="@+id/newaccount"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="New Here ? Create an Account"
+                android:textAlignment="center"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
 
 
 
-    <com.shobhitpuri.custombuttons.GoogleSignInButton
-        android:layout_width="match_parent"
-        android:layout_marginTop="10dp"
-        android:id="@+id/Googlebutton"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/google_sign_in"
-        app:isDarkTheme="true" />
+        </LinearLayout>
 
 
-    </LinearLayout>
 
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:id="@+id/newaccount"
-        android:layout_marginTop="10dp"
-        android:text="New Here ? Create an Account"
-        android:textColor="@android:color/white"
-        android:textSize="16dp"/>
-
-
-</LinearLayout>
 </RelativeLayout>

@@ -23,7 +23,12 @@ allprojects {
         maven {
             url "http://dl.bintray.com/jlmd/maven"
         }
+        jcenter{
+            url "http://jcenter.bintray.com/"
+        }
+
     }
+
 }
 
 task clean(type: Delete) {

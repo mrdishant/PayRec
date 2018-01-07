@@ -4,7 +4,12 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,14 +31,21 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class Paying extends AppCompatActivity {
 
-    private TextView textView;
+
     private CircleImageView imageView;
     private MaterialEditText editText,topaid;
     private Worker worker;
     private ProgressBar progressBar;
     float newadvance,newdue;
+    private Button mobile;
     String type,id;
     private DocumentReference documentReference;
+
+    private TextView job,address;
+    private CheckedTextView name;
+
+
+
 
 
     @Override
@@ -41,14 +53,51 @@ public class Paying extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paying);
 
-        textView=(TextView)findViewById(R.id.details);
+        job=(TextView)findViewById(R.id.job);
+        address=(TextView)findViewById(R.id.address);
+        name=(CheckedTextView) findViewById(R.id.name);
         imageView=(CircleImageView)findViewById(R.id.profile_image_add);
         topaid=(MaterialEditText)findViewById(R.id.tobepaid);
         progressBar=(ProgressBar)findViewById(R.id.progress);
         editText=(MaterialEditText)findViewById(R.id.advance);
         id=getIntent().getStringExtra("Id");
-
+        mobile=(Button)findViewById(R.id.mobile);
         type=getIntent().getStringExtra("Type");
+
+        Toolbar toolbar=(Toolbar)findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+            }
+        });
+
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                if(charSequence.length()>0){
+                    ( (Button)findViewById(R.id.addadvance)).setText("Pay ₹"+charSequence);
+                }
+                else {
+                    ( (Button)findViewById(R.id.addadvance)).setText("Pay");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+
+
+        });
+
 
 
         findViewById(R.id.addadvance).setOnClickListener(new View.OnClickListener() {
@@ -103,23 +152,28 @@ public class Paying extends AppCompatActivity {
             }
         });
 
-        documentReference= FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection(type).document(id);
+        documentReference= FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getUid()).collection(type).document(id);
 
         documentReference.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
                 worker=documentSnapshot.toObject(Worker.class);
-                Glide.with(getApplicationContext()).load(Uri.parse(worker.picture)).centerCrop().into(imageView);
+
+                if(worker.picture!=null){
+                    Glide.with(getApplicationContext()).load(Uri.parse(worker.picture)).into(imageView);
+                }
 
                 if(worker==null){
                     Toast.makeText(getApplicationContext(),"Please Login",Toast.LENGTH_SHORT).show();
                     finish();
                 }
 
-                textView.setText(worker.toString());
+                name.setText(worker.name);
+                mobile.setText(worker.mobile+"");
+                address.setText(worker.address);
+                job .setText(worker.job);
 
                 topaid.setText(worker.payment_due-worker.advance_payment+"");
-
 
             }
 

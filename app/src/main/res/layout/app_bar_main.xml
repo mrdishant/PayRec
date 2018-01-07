@@ -45,9 +45,8 @@
         app:ntb_badge_gravity="top"
         app:ntb_preview_colors="@android:color/black"
         app:ntb_active_color="@color/skyblue"
-
         app:ntb_badge_position="left"
-        app:ntb_badge_title_color="#ffffffff"
+        app:ntb_badge_title_color="#000"
         app:ntb_badge_use_typeface="true"
         app:ntb_badged="true"
         />

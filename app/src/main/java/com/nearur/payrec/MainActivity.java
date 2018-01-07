@@ -1,11 +1,12 @@
 package com.nearur.payrec;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -15,55 +16,58 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.onesignal.OneSignal;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import devlight.io.library.ntb.NavigationTabBar;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener, navigation {
 
     private FirebaseAuth auth;
     private FirebaseAuth.AuthStateListener authStateListener;
     private FirebaseUser user;
-    private Boss boss;
-    private DocumentReference reference;
     private UserDetails userDetails;
-    private Workers workers;
-    private FirebaseFirestore firebaseFirestore;
+    private Salary salary;
+    private Piecerate piecerate;
+    private AddEmployee addEmployee;
 
     private ViewPager viewPager;
     private SectionPagerAdapter pagerAdapter;
+    MenuItem item;
+    CircleImageView imageView;
+    RelativeLayout layout;
+    TextView name, email;
+    NavigationTabBar navigationTabBar;
+    Toolbar toolbar;
+    String[] titles = {"Dashboard", "Salaried Workers", "DailyWaged Workers", "Add Employee", "Profile"};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Dashboard");
         setSupportActionBar(toolbar);
 
-
+        OneSignal.startInit(this)
+                .inFocusDisplaying(OneSignal.OSInFocusDisplayOption.Notification)
+                .unsubscribeWhenNotificationsAreDisabled(true)
+                .init();
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -74,90 +78,118 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        View hView = navigationView.getHeaderView(0);
+        imageView = hView.findViewById(R.id.imageView);
+        layout = (RelativeLayout) hView.findViewById(R.id.layout);
+        name = (TextView) hView.findViewById(R.id.name);
+        email = (TextView) hView.findViewById(R.id.email);
 
         initviews();
         initAuth();
+        initbroadcast();
+
+
+
+    }
+
+    private void initbroadcast() {
+        BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Toast.makeText(getApplicationContext(), "Token : " + SharedPrefManager.getInstance(getApplicationContext()).getToken(), Toast.LENGTH_SHORT).show();
+            }
+        };
+
+        registerReceiver(broadcastReceiver, new IntentFilter(MyTokenService.broadcast));
 
     }
 
     private void initviews() {
 
-        pagerAdapter=new SectionPagerAdapter(getSupportFragmentManager());
+        pagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
 
-        viewPager=(ViewPager)findViewById(R.id.container);
+        viewPager = (ViewPager) findViewById(R.id.container);
         viewPager.setAdapter(pagerAdapter);
+        viewPager.setOffscreenPageLimit(4);
 
-        userDetails=new UserDetails();
-        workers=new Workers();
+        userDetails = new UserDetails();
+        salary = new Salary();
+        piecerate = new Piecerate();
+        addEmployee = new AddEmployee();
 
-        final NavigationTabBar navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
+        navigationTabBar = (NavigationTabBar) findViewById(R.id.ntb);
         final ArrayList<NavigationTabBar.Model> models = new ArrayList<>();
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_camera),
+                        getResources().getDrawable(R.drawable.home),
                         //Color.parseColor(colors[0])
                         Color.TRANSPARENT
-                ).title("Heart")
+                ).title("Home")
                         .badgeTitle("NTB")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_gallery),
+                        getResources().getDrawable(R.drawable.worker),
                         Color.TRANSPARENT// Color.parseColor(colors[1])
-                ).title("Cup")
+                ).title("Salaried")
                         .badgeTitle("with")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_manage),
+                        getResources().getDrawable(R.drawable.worker),
                         Color.TRANSPARENT//Color.parseColor(colors[2])
-                ).title("Diploma")
+                ).title("DailyWaged")
                         .badgeTitle("state")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_share),
+                        getResources().getDrawable(R.drawable.addemployee),
                         Color.TRANSPARENT//Color.parseColor(colors[3])
-                ).title("Flag")
+                ).title("Add")
                         .badgeTitle("icon")
                         .build()
         );
         models.add(
                 new NavigationTabBar.Model.Builder(
-                        getResources().getDrawable(R.drawable.ic_menu_send),
+                        getResources().getDrawable(R.drawable.profile2),
                         Color.TRANSPARENT//Color.parseColor(colors[4])
-                ).title("Medal")
+                ).title("Profile")
                         .badgeTitle("777")
                         .build()
         );
         navigationTabBar.setModels(models);
-        navigationTabBar.setViewPager(viewPager, 2);
+        navigationTabBar.setIsTitled(true);
+        navigationTabBar.setTitleMode(NavigationTabBar.TitleMode.ALL);
+        navigationTabBar.setViewPager(viewPager, 0);
+        navigationTabBar.setIsBadged(true);
+        navigationTabBar.setBackgroundColor(Color.TRANSPARENT);
+        navigationTabBar.setInactiveColor(Color.BLACK);
 
-        /*navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        navigationTabBar.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                Toast.makeText(getApplicationContext(),"Page Scrolled",Toast.LENGTH_SHORT).show();
+                toolbar.setTitle(titles[position]);
             }
 
             @Override
             public void onPageSelected(int position) {
-                Toast.makeText(getApplicationContext(),"Page Selected",Toast.LENGTH_SHORT).show();
+
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                Toast.makeText(getApplicationContext(),"Page Scrolled State Changed",Toast.LENGTH_SHORT).show();
+
             }
         });
-*/
 
-        /*navigationTabBar.setTitleMode(NavigationTabBar.TitleMode.ACTIVE);
+
+/*
+        navigationTabBar.setTitleMode(NavigationTabBar.TitleMode.ACTIVE);
         navigationTabBar.setBadgeGravity(NavigationTabBar.BadgeGravity.BOTTOM);
         navigationTabBar.setBadgePosition(NavigationTabBar.BadgePosition.CENTER);
-        navigationTabBar.setTypeface("fonts/custom_font.ttf");
         navigationTabBar.setIsBadged(true);
         navigationTabBar.setIsTitled(true);
         navigationTabBar.setIsTinted(true);
@@ -167,65 +199,48 @@ public class MainActivity extends AppCompatActivity
         navigationTabBar.setIsSwiped(true);
 
         navigationTabBar.setBadgeSize(10);
-        navigationTabBar.setTitleSize(10);
-        navigationTabBar.setIconSizeFraction(0.5f);
 */
-        navigationTabBar.setBehaviorEnabled(true);
 
 
     }
 
     private void initiuser() {
-        if(user!=null){
-            if(user.getPhotoUrl() == null || user.getDisplayName() == null){
-                startActivity(new Intent(getApplicationContext(),Profile.class));
-            }else {
-                reference=firebaseFirestore.collection("Users").document(user.getUid());
-                reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                    @Override
-                    public void onEvent(@Nullable DocumentSnapshot snapshot,
-                                        @Nullable FirebaseFirestoreException e) {
-                        if (e != null) {
-                            Log.w("Error", "Listen failed.", e);
-                            return;
-                        }
-
-                        if (snapshot != null && snapshot.exists()) {
-                            boss=snapshot.toObject(Boss.class);
-                            workers.setBoss(boss);
-                        }else{
-
-                        }
-                    }
-                });
+        if (user != null) {
+            name.setText(user.getDisplayName());
+            email.setText(user.getEmail());
+            if (user.getPhotoUrl() == null || user.getDisplayName() == null) {
+                Toast.makeText(getApplicationContext(),"Please Provide details",Toast.LENGTH_LONG).show();
+                navigationTabBar.setViewPager(viewPager,4);
+            } else {
+                Glide.with(getApplicationContext()).load(user.getPhotoUrl()).centerCrop().into(imageView);
             }
+        }else{
+            startActivity(new Intent(MainActivity.this, LoginSignup.class));
+            finish();
         }
     }
 
 
     private void initAuth() {
 
-        auth=FirebaseAuth.getInstance();
-        user=auth.getCurrentUser();
-        firebaseFirestore= FirebaseFirestore.getInstance();
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
 
-        authStateListener=new FirebaseAuth.AuthStateListener() {
+
+        authStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(user==null){
-                    Toast.makeText(getApplicationContext(),"Please Login",Toast.LENGTH_LONG).show();
-                }
-        }};
+                initiuser();
+            }
+        };
 
     }
-
 
 
     @Override
     protected void onStart() {
         super.onStart();
         auth.addAuthStateListener(authStateListener);
-        initiuser();
     }
 
     @Override
@@ -233,6 +248,8 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
+        } else if (navigationTabBar.getModelIndex() != 0) {
+            navigationTabBar.setViewPager(viewPager, 0);
         } else {
             super.onBackPressed();
         }
@@ -241,9 +258,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.main, menu);
+        item=menu.getItem(0);
         return true;
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -253,20 +273,16 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.profile) {
+        if (id == R.id.logout) {
 
-            if(user!=null){
-                startActivity(new Intent(getApplicationContext(),Profile.class));
-            }else{
-                startActivityForResult(new Intent(getApplicationContext(),LoginSignup.class),1234);}
+           navigationTabBar.setViewPager(viewPager,4);
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
+
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
@@ -281,9 +297,11 @@ public class MainActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_share) {
 
+            FirebaseMessaging.getInstance().subscribeToTopic("Workers");
+            Toast.makeText(getApplicationContext(), "Subscribed", Toast.LENGTH_LONG).show();
+
         } else if (id == R.id.nav_send) {
-            auth.signOut();
-            user=null;
+
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -295,14 +313,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 1234 ){
+        if (requestCode == 1234) {
 
-            user=auth.getCurrentUser();
+            user = auth.getCurrentUser();
         }
     }
 
+    @Override
+    public void setposition(int position) {
+        navigationTabBar.setViewPager(viewPager, position);
+    }
 
-    private class SectionPagerAdapter extends FragmentPagerAdapter{
+
+
+    private class SectionPagerAdapter extends FragmentPagerAdapter {
 
         public SectionPagerAdapter(android.support.v4.app.FragmentManager fm) {
             super(fm);
@@ -310,45 +334,27 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         public int getCount() {
-            return 3;
+            return 5;
         }
 
         @Override
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return workers;
-                case 1:
-                    return new Piecerate();
-                case 2:
                     return userDetails;
+                case 1:
+                    return salary;
+                case 2:
+                    return piecerate;
+                case 3:
+                    return addEmployee;
+                case 4:
+                    return new UserProfile();
             }
             return null;
 
         }
-
-
     }
 
-    public static class Pl extends Fragment{
 
-        public Pl() {
-        }
-
-        public static Pl newIn(int n){
-            Pl pl=new Pl();
-            Bundle a=new Bundle();
-            a.putInt("section_number",n);
-            pl.setArguments(a);
-            return pl;
-        }
-
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-            View v=inflater.from(getContext()).inflate(R.layout.content_main,container,false);
-            return v;
-        }
-    }
 }

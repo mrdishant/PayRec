@@ -2,29 +2,28 @@ package com.nearur.payrec;
 
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Movie;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ListView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -35,16 +34,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.SetOptions;
-import com.orhanobut.dialogplus.DialogPlus;
-import com.orhanobut.dialogplus.OnItemClickListener;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 
 /**
@@ -73,76 +69,41 @@ public class Salary extends Fragment {
 
         arrayAdapter=new SalaryAdapter(salarieds);
 
-        RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(),2);
         listView.setLayoutManager(mLayoutManager);
         listView.setItemAnimator(new DefaultItemAnimator());
-        listView.addItemDecoration(new DividerItemDecoration(getContext(), LinearLayoutManager.VERTICAL));
         listView.setAdapter(arrayAdapter);
 
         listView.addOnItemTouchListener(new RecylcerListener(getContext(),new RecylcerListener.listener(){
 
             @Override
-            public void onItemClick(View view, final int position) {
-                DialogPlus dialog = DialogPlus.newDialog(getContext())
-                        .setAdapter(new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1,new String[]{"View Details","Advance","Attendance","Do Payment"}))
-                        .setOnItemClickListener(new OnItemClickListener() {
-                            @Override
-                            public void onItemClick(final DialogPlus dialog, Object item, View v, int i) {
-
-                                switch(i){
-                                    case 0:
-                                        Intent x=new Intent(getContext(),WorkerDetails.class);
-                                        x.putExtra("Id",salarieds.get(position).id);
-                                        x.putExtra("Type","Salaried");
-                                        getContext().startActivity(x);
-                                        break;
-
-                                    case 1:
-                                        Intent intent=new Intent(getContext(),Advance.class);
-                                        intent.putExtra("Id",salarieds.get(position).id);
-                                        intent.putExtra("Type","Salaried");
-                                        getContext().startActivity(intent);
-                                        break;
-
-                                    case 2:showdialog(position);
-                                        break;
-
-                                    case 3:
-                                        Intent intent1=new Intent(getContext(),Paying.class);
-                                        intent1.putExtra("Id",salarieds.get(position).id);
-                                        intent1.putExtra("Type","Salaried");
-                                        getContext().startActivity(intent1);
-                                        break;
-                                }
-                                dialog.dismiss();
-                            }
-                        })
-                        .setExpanded(false)// This will enable the expand feature, (similar to android L share dialog)
-                        .create();
-                dialog.show();
+            public void onItemClick(View view, int position) {
+               showdialog2("Salaried",position);
             }
         }
         ));
 
-        FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("Salaried")
-            .addSnapshotListener(new EventListener<QuerySnapshot>() {
-                @Override
-                public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
-                        if(e != null){
-                            Toast.makeText(getContext(),"Some Error Occured",Toast.LENGTH_LONG).show();
-                            return;
+        if(FirebaseAuth.getInstance().getCurrentUser()!=null) {
+
+            FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().getCurrentUser().getUid()).collection("Salaried")
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(QuerySnapshot documentSnapshots, FirebaseFirestoreException e) {
+                            if (e != null) {
+                                Toast.makeText(getContext(), "Some Error Occured", Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            salarieds.clear();
+
+                            for (DocumentSnapshot doc : documentSnapshots) {
+                                salarieds.add(doc.toObject(Salaried.class));
+                            }
+                            temp.addAll(salarieds);
+                            arrayAdapter.notifyDataSetChanged();
                         }
-                        salarieds.clear();
+                    });
 
-                        for(DocumentSnapshot doc : documentSnapshots){
-                            salarieds.add(doc.toObject(Salaried.class));
-                        }
-                        temp.addAll(salarieds);
-                        arrayAdapter.notifyDataSetChanged();
-                }
-            });
-
-
+        }
         MaterialEditText editText=(MaterialEditText)v.findViewById(R.id.salarysearch);
 
         editText.setBackgroundColor(Color.TRANSPARENT);
@@ -294,6 +255,105 @@ public class Salary extends Fragment {
                 });
             }
         }).create().show();
+
+    }
+
+
+    public void showdialog2(String type,final int position){
+
+        final Dialog mydialog=new Dialog(getContext());
+        mydialog.setContentView(R.layout.popup);
+
+        TextView txtclose,due1,due2,name,details2;
+        LinearLayout due,advance,payment;
+        Button details;
+        CircleImageView imageView;
+
+
+        txtclose =(TextView) mydialog.findViewById(R.id.txtclose);
+        due1 =(TextView) mydialog.findViewById(R.id.due1);
+        due2 =(TextView) mydialog.findViewById(R.id.due2);
+        details2 =(TextView) mydialog.findViewById(R.id.details);
+        name =(TextView) mydialog.findViewById(R.id.name);
+        imageView =(CircleImageView) mydialog.findViewById(R.id.profile);
+
+        name.setText(salarieds.get(position).name);
+        if(salarieds.get(position).picture!=null){
+            Glide.with(getContext()).load(salarieds.get(position).picture).centerCrop().into(imageView);
+        }
+
+        details2.setText(salarieds.get(position).job+", "+salarieds.get(position).address);
+
+        if(type.equals("Salaried")){
+            due1.setText("Mark");
+            due2.setText("Attendance");
+        }else{
+            due1.setText("Today's");
+            due2.setText("Work");
+        }
+
+        due=(LinearLayout)mydialog.findViewById(R.id.due);
+        advance=(LinearLayout)mydialog.findViewById(R.id.advance);
+        payment=(LinearLayout)mydialog.findViewById(R.id.payment);
+
+        due.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showdialog(position);
+            }
+        });
+
+        advance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent=new Intent(getContext(),Advance.class);
+                intent.putExtra("Id",salarieds.get(position).id);
+                intent.putExtra("Type","Salaried");
+                getContext().startActivity(intent);
+            }
+        });
+
+        payment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent1=new Intent(getContext(),Paying.class);
+                intent1.putExtra("Id",salarieds.get(position).id);
+                intent1.putExtra("Type","Salaried");
+                getContext().startActivity(intent1);
+            }
+        });
+
+        details = (Button) mydialog.findViewById(R.id.btnfollow);
+        txtclose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mydialog.dismiss();
+            }
+        });
+
+        details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent x=new Intent(getContext(),WorkerDetails.class);
+                x.putExtra("Id",salarieds.get(position).id);
+                x.putExtra("Type","Salaried");
+                getContext().startActivity(x);
+
+            }
+        });
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent x=new Intent(getContext(),WorkerDetails.class);
+                x.putExtra("Id",salarieds.get(position).id);
+                x.putExtra("Type","Salaried");
+                getContext().startActivity(x);
+
+            }
+        });
+        mydialog.setCancelable(false);
+        mydialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        mydialog.show();
 
     }
 

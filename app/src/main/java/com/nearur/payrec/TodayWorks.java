@@ -112,7 +112,7 @@ public class TodayWorks extends AppCompatActivity implements TextWatcher{
             public void onEvent(DocumentSnapshot documentSnapshot, FirebaseFirestoreException e) {
                 waged=documentSnapshot.toObject(DailyWaged.class);
                 if(waged.picture !=null){
-                    Glide.with(getApplicationContext()).load(Uri.parse(waged.picture)).centerCrop().into(imageView);
+                    Glide.with(getApplicationContext()).load(Uri.parse(waged.picture)).into(imageView);
                 }
 
                 name.setText(waged.name);

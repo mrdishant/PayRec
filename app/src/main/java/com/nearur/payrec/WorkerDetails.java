@@ -47,7 +47,7 @@ public class WorkerDetails extends AppCompatActivity implements View.OnClickList
 
     private MaterialEditText name,mobile,address,job,date, editTextid, editTexttype,salary,search;
     private CircleImageView imageView;
-    private TextView edit,advance,payment_due,personalinfo,workino,dueinfo;
+    private TextView advance,payment_due,personalinfo,workino,dueinfo;
     String id,type;
     private ProgressBar progressBar;
     private DocumentReference documentReference;
@@ -130,7 +130,7 @@ public class WorkerDetails extends AppCompatActivity implements View.OnClickList
         }
 
         if(worker.picture!=null) {
-            Glide.with(getApplicationContext()).load(Uri.parse(worker.picture)).centerCrop().into(imageView);
+            Glide.with(getApplicationContext()).load(Uri.parse(worker.picture)).into(imageView);
         }
 
         advance.setText("Advance Payment : ₹ "+worker.advance_payment);
@@ -160,7 +160,6 @@ public class WorkerDetails extends AppCompatActivity implements View.OnClickList
         editTexttype.setEnabled(false);
 
         imageView=(CircleImageView)findViewById(R.id.profile_image_add);
-        edit=(TextView)findViewById(R.id.edit);
         progressBar=(ProgressBar)findViewById(R.id.progress);
 
         personalinfo=(TextView)findViewById(R.id.personalinfo);
@@ -355,9 +354,9 @@ public class WorkerDetails extends AppCompatActivity implements View.OnClickList
         salary.setEnabled(truei);
 
         if(truei){
-            edit.setOnClickListener(this);
+            imageView.setOnClickListener(this);
         }else{
-            edit.setClickable(false);
+            imageView.setClickable(false);
         }
 
 
@@ -367,7 +366,7 @@ public class WorkerDetails extends AppCompatActivity implements View.OnClickList
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == 1234 ){
             if(resultCode == Activity.RESULT_OK && data!=null &&data.getData() != null){
-                Glide.with(getApplicationContext()).load(data.getData()).centerCrop().into(imageView);
+                Glide.with(getApplicationContext()).load(data.getData()).into(imageView);
                 uploadpic(data.getData());
             }else{
                 Toast.makeText(getApplicationContext(),"Cancelled",Toast.LENGTH_SHORT).show();
@@ -483,7 +482,7 @@ public class WorkerDetails extends AppCompatActivity implements View.OnClickList
 
 
 
-        if(view==edit){
+        if(view==imageView){
             Intent intent=new Intent();
             intent.setType("image/*");
             intent.setAction(Intent.ACTION_GET_CONTENT);

@@ -8,12 +8,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.github.mikephil.charting.utils.ColorTemplate;
+
 
 import com.bumptech.glide.Glide;
+import com.github.florent37.picassopalette.PicassoPalette;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -42,17 +45,19 @@ public class Piece_rate_adapter extends RecyclerView.Adapter<Piece_rate_adapter.
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         if(dailyWageds.get(position).picture != null){
-            Glide.with(context).load(Uri.parse(dailyWageds.get(position).picture)).centerCrop().into(holder.circleImageView);
+            Picasso.with(context).load(dailyWageds.get(position).picture).into(holder.circleImageView,
+                    PicassoPalette.with(dailyWageds.get(position).picture, holder.circleImageView)
+                            .use(PicassoPalette.Profile.VIBRANT_DARK)
+                            .intoBackground(holder.layout)
+                            .intoTextColor(holder.details)
+
+                            /*.use(PicassoPalette.Profile.VIBRANT)
+                            .intoBackground(holder.cardView, PicassoPalette.Swatch.RGB)
+                            .intoTextColor(holder.details, PicassoPalette.Swatch.BODY_TEXT_COLOR)*/
+            );
+
         }
-
-        StringBuilder builder=new StringBuilder();
-
-        builder.append("Name : "+ dailyWageds.get(position).name+"\n");
-        builder.append("Advance : "+ dailyWageds.get(position).advance_payment+"\n");
-        builder.append("Due : "+ dailyWageds.get(position).payment_due+"\n");
-
-
-        holder.details.setText(builder.toString());
+        holder.details.setText(dailyWageds.get(position).name);
 
 
     }
@@ -65,14 +70,13 @@ public class Piece_rate_adapter extends RecyclerView.Adapter<Piece_rate_adapter.
     public class MyViewHolder extends RecyclerView.ViewHolder{
         public CircleImageView circleImageView;
         public TextView details;
-        private CardView cardView;
+        private LinearLayout layout;
 
         public MyViewHolder(View view) {
             super(view);
-
+            layout=(LinearLayout)view.findViewById(R.id.layout);
             circleImageView=(CircleImageView) view.findViewById(R.id.profile_image_add);
             details=(TextView)view.findViewById(R.id.worker_details);
-            cardView=(CardView)view.findViewById(R.id.cardview);
         }
 
     }
